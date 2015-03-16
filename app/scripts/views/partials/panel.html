@@ -1,0 +1,23 @@
+<div ng-show="showPanel">
+    
+    <span ng-if="game_level==1">
+    <a class="btn check" href="" ng-click="setSequenceStep('king')"><img style="max-width: 50px;" src='assets/img/king.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('queen')"><img style="max-width: 50px;" src='assets/img/queen.jpg'></a>
+    </span>
+    <span ng-if="game_level==2">
+    <a class="btn check" href="" ng-click="setSequenceStep('king')"><img style="max-width: 50px;" src='assets/img/king.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('queen')"><img style="max-width: 50px;" src='assets/img/queen.jpg'></a><br>
+    <a class="btn check" href="" ng-click="setSequenceStep('rook')"><img style="max-width: 50px;" src='assets/img/rook.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('bishop')"><img style="max-width: 50px;" src='assets/img/bishop.jpg'></a>
+    </span>
+    
+    <span ng-if="game_level==3">
+    <a class="btn check" href="" ng-click="setSequenceStep('king')"><img style="max-width: 50px;" src='assets/img/king.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('queen')"><img style="max-width: 50px;" src='assets/img/queen.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('rook')"><img style="max-width: 50px;" src='assets/img/rook.jpg'></a><br>
+    <a class="btn check" href="" ng-click="setSequenceStep('bishop')"><img style="max-width: 50px;" src='assets/img/bishop.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('knight')"><img style="max-width: 50px;" src='assets/img/knight.jpg'></a>
+    <a class="btn check" href="" ng-click="setSequenceStep('pawn')"><img style="max-width: 50px;" src='assets/img/pawn.jpg'></a>
+    </span>   
+    
+</div>

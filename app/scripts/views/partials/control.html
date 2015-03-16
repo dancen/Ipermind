@@ -1,0 +1,18 @@
+<div>Points: <span id="points" ng-bind="points" style="color: #c83539;"></span> - Level: <span id="points" ng-bind="game_level" style="color: #c83539;"></span></div>
+<div id="tzcd" class="tzcd" ng-bind="time_elapsed_view"></div><br>
+
+<div class="centered" style="text-align:center;position:relative;left:5px;width:100%;">
+    <span id="result_0" class="matrix_result"><img src='assets/img/check_{{ result_matrix[0] }}.png'></span><br>
+    <span id="result_1" class="matrix_result"><img src='assets/img/check_{{ result_matrix[1] }}.png'></span>
+    <span id="result_2" class="matrix_result"><img src='assets/img/check_{{ result_matrix[2] }}.png'></span><br>
+    <span id="result_3" class="matrix_result"><img src='assets/img/check_{{ result_matrix[3] }}.png'></span>
+</div>
+
+
+<div ng-model="updateStars">
+    <span ng-repeat="star in stars track by $index">
+        <span><img src='assets/img/star{{ stars[$index]}}.gif'></span>
+    </span>
+</div>
+
+

@@ -1,0 +1,10 @@
+<div ng-show="isWinnerLabel">
+    <span>Great! You Win.</span><br><br>
+    <a class="btn btn-skin" href="" ng-click="init();">Start a New Game</a>
+</div>
+<div ng-show="isLoserLabel">
+    <span>Sorry! You Lose</span><br><br>
+    <a class="btn btn-skin" href="" ng-click="init();">Start a New Game</a>
+    <br><br>
+    <a href="" ng-click="showSecretSequence()" ng-hide="debug">Show the secret sequence</a>
+</div>
