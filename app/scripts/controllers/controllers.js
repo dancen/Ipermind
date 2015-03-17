@@ -52,6 +52,7 @@
             $scope.isStarted = false;
             $scope.result_matrix = [];
             $scope.time_elapsed_view;
+            $scope.secret_sequence;
             var timeoutcounter;
 
 
@@ -141,21 +142,27 @@
 
             $scope.setSequenceStep = function(elem) {
                 
+                if($scope.sequence_current == 0){
+                    $scope.sequence_step_view = Sequence.resetSequence($scope.sequence_step_view,_SEQ_EMPTY);                    
+                    $scope.clearResults();
+                }
+                 
                 $scope.sequence_step_view[$scope.sequence_current]=elem;
-                Arrow.moveArrow($scope.sequence_current);
+                $scope.arrow_step = Arrow.moveArrow($scope.arrow_step, $scope.sequence_current);                
+                $scope.sequence = Sequence.increaseSequence($scope.sequence,elem);
+                $scope.sequence_str = Sequence.setSequenceStr($scope.sequence);
                 $scope.sequence_current++;
                 
-                Sequence.increaseSequence(elem);
-                Sequence.setSequenceStr();
                 if ($scope.sequence_current == 4) {
+                    
                     $scope.check();
                     $scope.sequence = [];
                     $scope.sequence_str = "";
                     Stars.updateStars();
-                    $scope.sequence_current=0;
-                    Sequence.resetSequence(_SEQ_EMPTY);
+                    $scope.sequence_current=0;                    
                     Arrow.moveArrow(0);
-                }
+                    
+                } 
 
             };
 
@@ -174,11 +181,11 @@
 
             $scope.check = function() {
 
-                var stateFactory = new StateFactory($scope);
+                var stateFactory = new StateFactory();
                 var state = stateFactory.createPlayingGame();
-                var model = state.checkGame();
+                var model = state.checkGame($scope.time_elapsed,$scope.sequence_str);
 
-                if (model.isWinner() == true) {
+                if (model.isWinner == true) {
                     $scope.time = model.getTime();
                     $scope.isWinner = true;
                     $scope.isWinnerLabel = true;
@@ -190,11 +197,11 @@
                     model.calculatePoints($scope.time_elapsed);
                     Stars.resetStars();
                 } else {
-                                        
+                                    
                     $scope.isWinner = false;
                     $scope.isLoser = true;
+                    $scope.setResults(model.getErrors());  
                     $scope.tryAgain();
-                    $scope.setResults(model.getErrors());                    
                 }
             };
 
@@ -227,17 +234,20 @@
              */
 
             $scope.init = function() {
-                var stateFactory = new StateFactory($scope);
+                var stateFactory = new StateFactory();
                 var state = stateFactory.createNewGame();
-                var model = state.noGame($scope.game_level);
+                var model = state.noGame($scope.game_level,$scope.time_elapsed);
                 $scope.isWinnerLabel = false;
                 $scope.isLoserLabel = false;
                 $scope.showPanel = true;
-                Stars.getStars();
+//                var starsFactory = new Stars($scope);
+//                starsFactory.getStars();
+                $scope.stars = Stars.init().getStars();
                 $scope.clearResults();
                 $scope.restartCounter();
                 $scope.isStarted = true;                
                 $scope.hideSecretSequence();
+                $scope.sequence_step_view = Sequence.resetSequence($scope.sequence_step_view,_SEQ_EMPTY); 
                 if($scope.isWinner == true){
                     $scope.increaseLevel();
                 }
@@ -283,7 +293,7 @@
             $scope.winner = function() {
                 var stateFactory = new StateFactory($scope);
                 var state = stateFactory.createEndGame();
-                var model = state.winnerGame();
+                var model = state.winnerGame($scope.time,$scope.secret_sequence);
                 if (model.isRecord()) {
                     model.getRecords();
                     model.saveRecord();
@@ -304,7 +314,7 @@
             $scope.loser = function() {
                 var stateFactory = new StateFactory($scope);
                 var state = stateFactory.createEndGame();
-                var model = state.loserGame();
+                var model = state.loserGame($scope.secret_sequence);
                 model.decreasePoints();
             };
 
@@ -319,10 +329,10 @@
              */
 
 
-            $scope.tryAgain = function() {
+            $scope.tryAgain = function() {                
                 var stateFactory = new StateFactory($scope);
                 var state = stateFactory.createNewGame();
-                var model = state.newGame($scope.game_level);
+                var model = state.newGame();
             };
 
 
