@@ -237,6 +237,7 @@
                 var stateFactory = new StateFactory();
                 var state = stateFactory.createNewGame();
                 var model = state.noGame($scope.game_level,$scope.time_elapsed);
+                $scope.secret_sequence = model.getSecretSequence();
                 $scope.isWinnerLabel = false;
                 $scope.isLoserLabel = false;
                 $scope.showPanel = true;
