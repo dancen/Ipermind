@@ -14,7 +14,7 @@
 
       
     
-    ipermindServices.service("saveContactService", ["$http", function($http) {
+    ipermindServices.service("saveRecordService", ["$http", function($http) {
 
         //TODO
            
