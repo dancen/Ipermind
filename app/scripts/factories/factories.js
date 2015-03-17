@@ -184,12 +184,14 @@
             }
             ;
 
-            GameModel.prototype.calculatePoints = function(time_elapsed) {
-                this.points = this.points + (time_elapsed * 100);
+            GameModel.prototype.calculatePoints = function(points, time_elapsed) {
+                this.points = points + (time_elapsed * 100);
+                return this.points;
             };
             
-            GameModel.prototype.decreasePoints = function() {
-                this.points = this.points - (this.points / 2);
+            GameModel.prototype.decreasePoints = function(points) {
+                this.points = points - (points / 2);
+                return this.points;
             };
 
             GameModel.prototype.getPoints = function() {
@@ -481,7 +483,7 @@
                 this.secret_sequence = new Array();
                 for ($i = 0; $i < 4; $i++) {
                     this.unit = this.getUnit();
-                    this.secret_sequence.push(unit);
+                    this.secret_sequence.push(this.unit);
                 }
                 return this.secret_sequence;
             };
@@ -541,7 +543,7 @@
                 this.secret_sequence = new Array();
                 for ($i = 0; $i < 4; $i++) {
                     this.unit = this.getUnit();
-                    this.secret_sequence.push(unit);
+                    this.secret_sequence.push(this.unit);
                 }
                 return this.secret_sequence;
 
@@ -595,7 +597,6 @@
 
 
                 // PARSE RIGHT COLOR IN RIGHT PLACE
-
                 for (var i = 0; i < usarray.length; i++) {
                     if (usarray[i] == csarray[i]) {
                         this.result_matrix[i] = _BLACK;
@@ -608,7 +609,6 @@
 
 
                 // PARSE RIGHT COLOR IN WRONG PLACE
-
                 for (var i = 0; i < player_sequence_clone.length; i++) {
                     for (var y = 0; y < csarray.length; y++) {
                         if (this.result_matrix[y] == _EMPTY) {
