@@ -67,22 +67,19 @@
 
     ipermindFactories.factory('StartGameState', ["GameModel", "Generator", function(GameModel, Generator) {
 
-            function StartGameState() {
-                var game_model;
-            }
-            ;
+            function StartGameState() {};
 
             StartGameState.prototype.noGame = function(level,start_time) {
                 var model = GameModel;
                 var secret_sequence = Generator.getSecretSequence(level);
                 model.setSecretSequence(secret_sequence);
                 model.setTime(start_time);
-                this.game_model = model;
+                return model;
             };
 
             StartGameState.prototype.newGame = function() {
                 var model = GameModel;
-                this.game_model = model;
+                return model;
             };
 
             return StartGameState;
