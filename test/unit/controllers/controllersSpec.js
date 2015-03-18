@@ -9,9 +9,9 @@
 //CONTROLLER TEST
 describe('IpermindController', function() {
 
-    var stateFactory, countdownFactory, $controller, StartGameState, PlayingGameState, EndGameState, starsFactory, Arrow, sequenceFactory, _seq_empty, _arrow, _arrow_empty;
+    var stateFactory, countdownFactory, $controller, StartGameState, PlayingGameState, EndGameState, starsFactory, Arrow, sequenceFactory, _seq_empty, _arrow, _arrow_empty, RecordService;
 
-    beforeEach(module('ipermindControllers', function($provide) {
+    beforeEach(module('danieleControllers', function($provide) {
         $provide.value('StateFactory', stateFactory);
         $provide.value('COUNTDOWN', countdownFactory);
         $provide.value('Stars', starsFactory);
@@ -23,6 +23,7 @@ describe('IpermindController', function() {
         $provide.value('StartGameState', StartGameState);
         $provide.value('PlayingGameState', PlayingGameState);
         $provide.value('EndGameState', EndGameState);
+        $provide.value('RecordService', RecordService);
     }));
 
     beforeEach(inject(function(_$controller_) {
@@ -84,3 +85,47 @@ describe('IpermindController', function() {
 
 });
 
+
+//CONTROLLER TEST
+describe('CalculatorController', function() {
+
+var $controller;
+
+beforeEach(module('danieleControllers'));
+
+beforeEach(inject(function(_$controller_) {
+        $controller = _$controller_;
+    }));
+    
+    it('should calculate the operation', function() {
+        var $scope = {};
+        var controller = $controller('CalculatorController', {$scope: $scope});
+        $scope.operation = "";
+        $scope.addNumber("5");
+        $scope.addOperand("-");
+        $scope.addNumber("2");
+        $scope.operation = eval($scope.operation);
+        expect($scope.operation).toBe(3);
+    });
+    
+    it('should calculate the operation stored in memory', function() {
+        var $scope = {};
+        var controller = $controller('CalculatorController', {$scope: $scope});
+        $scope.operation = "";
+        $scope.addNumber("5");
+        $scope.addOperand("-");
+        $scope.addNumber("2");
+        $scope.operation = eval($scope.operation);
+        $scope.mplus('M+');
+        $scope.addNumber("5");
+        $scope.addOperand("+");
+        $scope.addNumber("2");
+        $scope.operation = eval($scope.operation);
+        $scope.mrcOn('MRC');
+        expect($scope.operation).toBe(10);
+    });
+
+
+
+
+});
