@@ -18,7 +18,7 @@
      */
     var ipermindControllers = angular.module('ipermindControllers', []);
 
-    ipermindControllers.controller("IpermindController", ["$scope", "StateFactory", "$timeout", "COUNTDOWN", "Stars", "Arrow", "Sequence","_SEQ_EMPTY","_ARROW","_ARROW_EMPTY", function($scope, StateFactory, $timeout, COUNTDOWN, Stars, Arrow, Sequence,_SEQ_EMPTY,_ARROW,_ARROW_EMPTY) {
+    ipermindControllers.controller("IpermindController", ["$scope", "StateFactory", "$timeout", "COUNTDOWN", "Stars", "Arrow", "Sequence", "_SEQ_EMPTY", "_ARROW", "_ARROW_EMPTY", "RecordService", function($scope, StateFactory, $timeout, COUNTDOWN, Stars, Arrow, Sequence, _SEQ_EMPTY, _ARROW, _ARROW_EMPTY, RecordService) {
 
 
             /**
@@ -33,9 +33,9 @@
             $scope.game_state = null;
             $scope.isWinner = false;
             $scope.player = null;
-            $scope.sequence_step = [_SEQ_EMPTY,_SEQ_EMPTY,_SEQ_EMPTY,_SEQ_EMPTY];
-            $scope.sequence_step_view = [_SEQ_EMPTY,_SEQ_EMPTY,_SEQ_EMPTY,_SEQ_EMPTY];
-            $scope.arrow_step = [_ARROW_EMPTY,_ARROW_EMPTY,_ARROW_EMPTY,_ARROW_EMPTY];
+            $scope.sequence_step = [_SEQ_EMPTY, _SEQ_EMPTY, _SEQ_EMPTY, _SEQ_EMPTY];
+            $scope.sequence_step_view = [_SEQ_EMPTY, _SEQ_EMPTY, _SEQ_EMPTY, _SEQ_EMPTY];
+            $scope.arrow_step = [_ARROW_EMPTY, _ARROW_EMPTY, _ARROW_EMPTY, _ARROW_EMPTY];
             $scope.sequence = new Array();
             $scope.sequence_current = 0;
             $scope.time_elapsed = 0;
@@ -53,6 +53,7 @@
             $scope.result_matrix = [];
             $scope.time_elapsed_view;
             $scope.secret_sequence;
+            $scope.records;
             var timeoutcounter;
 
 
@@ -65,13 +66,13 @@
              */
 
 
-             $scope.showSecretSequence = function() {
-                 $scope.debug = true;
-             };
-             
-             $scope.hideSecretSequence = function() {
-                 $scope.debug = false;
-             };
+            $scope.showSecretSequence = function() {
+                $scope.debug = true;
+            };
+
+            $scope.hideSecretSequence = function() {
+                $scope.debug = false;
+            };
 
 
 
@@ -141,35 +142,35 @@
              */
 
             $scope.setSequenceStep = function(elem) {
-                
-                if($scope.sequence_current == 0){
-                    $scope.sequence_step_view = Sequence.resetSequence($scope.sequence_step_view,_SEQ_EMPTY);                    
+
+                if ($scope.sequence_current == 0) {
+                    $scope.sequence_step_view = Sequence.resetSequence($scope.sequence_step_view, _SEQ_EMPTY);
                     $scope.clearResults();
                 }
-                 
-                $scope.sequence_step_view[$scope.sequence_current]=elem;
-                $scope.arrow_step = Arrow.moveArrow($scope.arrow_step, $scope.sequence_current);                
-                $scope.sequence = Sequence.increaseSequence($scope.sequence,elem);
+
+                $scope.sequence_step_view[$scope.sequence_current] = elem;
+                $scope.arrow_step = Arrow.moveArrow($scope.arrow_step, $scope.sequence_current);
+                $scope.sequence = Sequence.increaseSequence($scope.sequence, elem);
                 $scope.sequence_str = Sequence.setSequenceStr($scope.sequence);
                 $scope.sequence_current++;
-                
+
                 if ($scope.sequence_current == 4) {
-                    
+
                     $scope.check();
                     $scope.sequence = [];
                     $scope.sequence_str = "";
                     Stars.updateStars();
-                    $scope.sequence_current=0;                    
-                    $scope.arrow_step = Arrow.moveArrow($scope.arrow_step,0);
-                    
-                } 
+                    $scope.sequence_current = 0;
+                    $scope.arrow_step = Arrow.moveArrow($scope.arrow_step, 0);
+
+                }
 
             };
 
 
-           
 
-           
+
+
 
             /**
              * check() 
@@ -183,7 +184,7 @@
 
                 var stateFactory = new StateFactory();
                 var state = stateFactory.createPlayingGame();
-                var model = state.checkGame($scope.time_elapsed,$scope.sequence_str);
+                var model = state.checkGame($scope.time_elapsed, $scope.sequence_str);
 
                 if (model.isWinner == true) {
                     $scope.time = model.getTime();
@@ -194,13 +195,13 @@
                     $scope.winner();
                     $timeout.cancel(timeoutcounter);
                     $scope.setResults(model.getErrors());
-                    $scope.points = model.calculatePoints($scope.points,$scope.time_elapsed);
+                    $scope.points = model.calculatePoints($scope.points, $scope.time_elapsed);
                     Stars.resetStars();
                 } else {
-                                    
+
                     $scope.isWinner = false;
                     $scope.isLoser = true;
-                    $scope.setResults(model.getErrors());  
+                    $scope.setResults(model.getErrors());
                     $scope.tryAgain();
                 }
             };
@@ -236,7 +237,7 @@
             $scope.init = function() {
                 var stateFactory = new StateFactory();
                 var state = stateFactory.createNewGame();
-                var model = state.noGame($scope.game_level,$scope.time_elapsed);
+                var model = state.noGame($scope.game_level, $scope.time_elapsed);
                 $scope.secret_sequence = model.getSecretSequence();
                 $scope.isWinnerLabel = false;
                 $scope.isLoserLabel = false;
@@ -244,10 +245,10 @@
                 $scope.stars = Stars.init().getStars();
                 $scope.clearResults();
                 $scope.restartCounter();
-                $scope.isStarted = true;                
+                $scope.isStarted = true;
                 $scope.hideSecretSequence();
-                $scope.sequence_step_view = Sequence.resetSequence($scope.sequence_step_view,_SEQ_EMPTY);                
-                if($scope.isWinner == true){
+                $scope.sequence_step_view = Sequence.resetSequence($scope.sequence_step_view, _SEQ_EMPTY);
+                if ($scope.isWinner == true) {
                     $scope.increaseLevel();
                 }
             };
@@ -261,9 +262,9 @@
              */
 
             $scope.stopCounter = function() {
-                
+
                 //TODO
-                
+
             };
 
 
@@ -290,15 +291,9 @@
              */
 
             $scope.winner = function() {
-                var stateFactory = new StateFactory($scope);
+                var stateFactory = new StateFactory();
                 var state = stateFactory.createEndGame();
-                var model = state.winnerGame($scope.time,$scope.secret_sequence);
-                if (model.isRecord()) {
-                    model.getRecords();
-                    model.saveRecord();
-                } else {
-                    model.getRecords();
-                }
+                var model = state.winnerGame($scope.time, $scope.secret_sequence);
             };
 
 
@@ -311,7 +306,7 @@
              */
 
             $scope.loser = function() {
-                var stateFactory = new StateFactory($scope);
+                var stateFactory = new StateFactory();
                 var state = stateFactory.createEndGame();
                 var model = state.loserGame($scope.secret_sequence);
                 $scope.points = model.decreasePoints($scope.points);
@@ -328,8 +323,8 @@
              */
 
 
-            $scope.tryAgain = function() {                
-                var stateFactory = new StateFactory($scope);
+            $scope.tryAgain = function() {
+                var stateFactory = new StateFactory();
                 var state = stateFactory.createNewGame();
                 var model = state.newGame();
             };
@@ -396,12 +391,30 @@
             };
 
 
-            
+            /**
+             * showRecords() 
+             * show records
+             *
+             * @param  
+             * @return void 
+             */
+
+            $scope.showRecords = function() {
+                var call = RecordService.getRecords();
+                call.success(function(data) {
+                    $scope.records = data;
+                }).error(function(data) {
+                    $scope.records = null;
+                });
+            };
+
+
+
 
 
         }]);
-    
-   
+
+
 
 
 })();
