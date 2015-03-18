@@ -8,8 +8,8 @@
 
 
     // MAIN MODULE CREATION
-    var ipermind = angular.module('ipermind', [
-        'ipermindControllers',
+    var daniele = angular.module('daniele', [
+        'danieleControllers',
         'ipermindFactories',
         'ipermindDirectives',
         'ipermindServices'])
@@ -33,6 +33,7 @@
             .constant('RESPONSE_SUCCESS', "success");
 
 
+    
 
 
 
