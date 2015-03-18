@@ -16,9 +16,9 @@
      *
      * @return object 
      */
-    var ipermindControllers = angular.module('ipermindControllers', []);
+    var danieleControllers = angular.module('danieleControllers', []);
 
-    ipermindControllers.controller("IpermindController", ["$scope", "StateFactory", "$timeout", "COUNTDOWN", "Stars", "Arrow", "Sequence", "_SEQ_EMPTY", "_ARROW", "_ARROW_EMPTY", "RecordService", function($scope, StateFactory, $timeout, COUNTDOWN, Stars, Arrow, Sequence, _SEQ_EMPTY, _ARROW, _ARROW_EMPTY, RecordService) {
+    danieleControllers.controller("IpermindController", ["$scope", "StateFactory", "$timeout", "COUNTDOWN", "Stars", "Arrow", "Sequence", "_SEQ_EMPTY", "_ARROW", "_ARROW_EMPTY", "RecordService", function($scope, StateFactory, $timeout, COUNTDOWN, Stars, Arrow, Sequence, _SEQ_EMPTY, _ARROW, _ARROW_EMPTY, RecordService) {
 
 
             /**
@@ -414,6 +414,165 @@
 
         }]);
 
+
+
+
+
+    danieleControllers.controller("CalculatorController", ["$scope", function($scope) {
+
+
+            /**
+             * controller initial variables
+             *
+             * @return void 
+             */
+
+            $scope.operation = "";
+            $scope.inMemoryPlus = false;
+            $scope.inMemoryMinus = false;
+            $scope.memory_value = "";
+            $scope.memory_symbol = "";
+
+
+            /**
+             * mrcOn(val) 
+             * execute the operation in memory
+             *
+             * @param  string
+             * @return void 
+             */
+
+            $scope.mrcOn = function(val) {
+                if($scope.inMemoryPlus){
+                    $scope.operation = $scope.operation+$scope.memory_value;
+                    $scope.clearMemory();
+                }
+                if($scope.inMemoryMinus){
+                    $scope.operation = $scope.operation-$scope.memory_value;
+                    $scope.clearMemory();
+                }
+            };
+            
+            
+            /**
+             * mplus(val) 
+             * store in memory a plus operation in order to evaluate later
+             *
+             * @param  string
+             * @return void 
+             */
+            $scope.mplus = function(val) {
+                $scope.inMemoryPlus = true;
+                $scope.inMemoryMinus = false;
+                $scope.memory_value = $scope.operation;
+                $scope.memory_symbol = val;
+                $scope.cancel();
+            };
+            
+            
+            /**
+             * mminus(val) 
+             * store in memory a minus operation in order to evaluate later
+             *
+             * @param  string
+             * @return void 
+             */
+            $scope.mminus = function(val) {
+                $scope.inMemoryMinus = true;
+                $scope.inMemoryPlus = false;
+                $scope.memory_value = $scope.operation;
+                $scope.memory_symbol = val;
+                $scope.cancel();
+            };
+            
+            
+            /**
+             * clearMemory() 
+             * clear all data in memory
+             *
+             * @param  
+             * @return void 
+             */
+            $scope.clearMemory = function() {
+                $scope.memory_value = "";
+                $scope.memory_symbol = "";                
+                $scope.inMemoryMinus = false;
+                $scope.inMemoryPlus = false;
+            };
+            
+            
+            
+            /**
+             * addOperand(val) 
+             * set a operand in display (+,-,*,/)
+             *
+             * @param char
+             * @return void 
+             */
+            $scope.addOperand = function(val) {
+                $scope.operation += val;
+            };
+
+
+            /**
+             * addNumber(val) 
+             * set a integer in display
+             * 
+             * @param  integer
+             * @return void 
+             */
+            $scope.addNumber = function(val) {
+                $scope.operation += val;
+            };
+
+
+            /**
+             * addDecimal(val) 
+             * set the decimal point in display
+             *
+             * @param  char
+             * @return void 
+             */
+            $scope.addDecimal = function(val) {
+                $scope.operation += val;
+            };
+            
+            
+            /**
+             * cancel() 
+             * clear display
+             *
+             * @param  
+             * @return void 
+             */
+            $scope.cancel = function() {
+                $scope.operation = "";
+            };
+            
+            
+            /**
+             * calculate() 
+             * evaluate the operation
+             *
+             * @param  
+             * @return void 
+             */
+            $scope.calculate = function() {
+
+                try
+                {
+                    $scope.operation = $scope.$eval($scope.operation);
+                }
+                catch (e)
+                {
+                    $scope.operation = 'Error';
+                }
+                
+            };
+
+
+
+        }]);
 
 
 
