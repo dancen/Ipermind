@@ -12,20 +12,20 @@
     var ipermindServices = angular.module('ipermindServices', []);
 
 
-      
-    
-    ipermindServices.service("saveRecordService", ["$http", function($http) {
 
-        //TODO
-           
-    }]);
-    
-    
-   
+    ipermindServices.service("RecordService", ["$http", function($http) {
 
+            var service = this;
+            service.getRecords = function() {
+                return $http({
+                    method: 'GET',
+                    url: './app/scripts/resources/data/records.json',
+                    data: null,
+                    headers: {'Content-Type': 'application/json'}
+                });
+            };
 
-    
-
+        }]);
 
 
 })();
