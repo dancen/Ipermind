@@ -34,7 +34,9 @@
 
     ipermindFactories.factory('StateFactory', ["StartGameState", "PlayingGameState", "EndGameState", function(StartGameState, PlayingGameState, EndGameState) {
 
-            function StateFactory() {};
+            function StateFactory() {
+            }
+            ;
 
             StateFactory.prototype.createNewGame = function() {
                 return new StartGameState();
@@ -67,9 +69,11 @@
 
     ipermindFactories.factory('StartGameState', ["GameModel", "Generator", function(GameModel, Generator) {
 
-            function StartGameState() {};
+            function StartGameState() {
+            }
+            ;
 
-            StartGameState.prototype.noGame = function(level,start_time) {
+            StartGameState.prototype.noGame = function(level, start_time) {
                 var model = GameModel;
                 var secret_sequence = Generator.getSecretSequence(level);
                 model.setSecretSequence(secret_sequence);
@@ -98,10 +102,12 @@
 
     ipermindFactories.factory('PlayingGameState', ["GameModel", "Checker", function(GameModel, Checker) {
 
-            function PlayingGameState() {};
+            function PlayingGameState() {
+            }
+            ;
 
 
-            PlayingGameState.prototype.checkGame = function(time_elapsed,sequence_str) {
+            PlayingGameState.prototype.checkGame = function(time_elapsed, sequence_str) {
 
                 var model = GameModel;
                 model.setTime(time_elapsed);
@@ -137,9 +143,11 @@
 
     ipermindFactories.factory('EndGameState', ["GameModel", function(GameModel) {
 
-            function EndGameState() {};
+            function EndGameState() {
+            }
+            ;
 
-            EndGameState.prototype.winnerGame = function(time,secret_sequence) {
+            EndGameState.prototype.winnerGame = function(time, secret_sequence) {
                 var model = GameModel;
                 model.setTime(time);
                 model.setSecretSequence(secret_sequence);
@@ -164,12 +172,12 @@
      * GameModel(scope) 
      * the main object manager
      *
-     * @param RecordManager
+     * @param 
      * @return object 
      */
 
 
-    ipermindFactories.factory('GameModel', ["RecordManager", function(RecordManager) {
+    ipermindFactories.factory('GameModel', function() {
 
             function GameModel() {
                 var secret_sequence;
@@ -177,7 +185,7 @@
                 var isWinner;
                 var time_elapsed;
                 var errors;
-                var points;                
+                var points;
             }
             ;
 
@@ -185,7 +193,7 @@
                 this.points = points + (time_elapsed * 100);
                 return this.points;
             };
-            
+
             GameModel.prototype.decreasePoints = function(points) {
                 this.points = points - (points / 2);
                 return this.points;
@@ -230,7 +238,7 @@
             GameModel.prototype.isWinner = function() {
                 return this.isWinner;
             };
-            
+
             GameModel.prototype.isLoser = function() {
                 return this.isLoser;
             };
@@ -243,29 +251,17 @@
                 return this.time_elapsed;
             };
 
-            GameModel.prototype.isRecord = function() {
-                return this.isWinner;
-            };
-
-            GameModel.prototype.getRecords = function() {
-                var recordManager = new RecordManager();
-                return recordManager.getRecords();
-            };
-
-            GameModel.prototype.saveRecord = function() {
-                var recordManager = new RecordManager();
-                recordManager.persist();
-            };
+            
 
             return new GameModel;
 
-        }]);
+        });
 
 
 
 
 
-   /**
+    /**
      * Generator(scope) 
      * manage the generation of sequences
      *
@@ -284,7 +280,7 @@
 
             Generator.prototype.getSecretSequence = function(level) {
                 this.secret_sequence = StrategyManager.getStrategy(level);
-                return this.secret_sequence; 
+                return this.secret_sequence;
             };
 
             return new Generator;
@@ -292,55 +288,10 @@
         }]);
 
 
-
-   /**
-     * RecordManager(scope) 
-     * manage the saving and persist of data to the server (NEED REFACTORING)
-     * the factory should call services from services.js module (TODO)
-     * 
-     * @param $http
-     * @return object 
-     */
+    
 
 
-    ipermindFactories.factory('RecordManager', ["$http", function($http) {
-
-            function RecordManager() {
-//                $scope.player;
-//                $scope.timegame;
-//                $scope.entity_manager;
-//                $scope.computer_sequence;
-            }
-            ;
-
-            RecordManager.prototype.getRecords = function() {
-//                return $http({
-//                    type: 'GET',
-//                    url: 'http://localhost/ipermind/...',
-//                    data: null,
-//                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-//                });
-            };
-
-
-            RecordManager.prototype.persist = function() {
-//                return $http({
-//                    type: 'POST',
-//                    url: 'http://localhost/ipermind/...',
-//                    data: 'setScore=' + this.calculateScore() + '&setTimeGame=' + this.timeDataTrasform() + '&setCreatedAt=' + new DateTime(),
-//                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-//                });
-            };
-
-
-            return RecordManager;
-
-        }]);
-
-
-
-
-/**
+    /**
      * StrategyManager(scope) 
      * manage the strategies of the application
      *
@@ -384,7 +335,7 @@
 
 
 
-/**
+    /**
      * EasyGame(scope) 
      * manage the EasyGame strategy of the application
      *
@@ -416,7 +367,7 @@
                 }
                 if (this.sseq >= 50 && this.sseq < 100) {
                     this.sp = _QUEEN;
-                }               
+                }
                 return this.sp;
             };
 
@@ -434,7 +385,7 @@
         }]);
 
 
-/**
+    /**
      * MediumGame(scope) 
      * manage the MediumGame strategy of the application
      *
@@ -472,7 +423,7 @@
                 }
                 if (this.sseq >= 75 && this.sseq < 100) {
                     this.sp = _BISHOP;
-                }               
+                }
                 return this.sp;
             };
 
@@ -489,7 +440,7 @@
 
         }]);
 
-/**
+    /**
      * DifficultGame(scope) 
      * manage the DifficultGame strategy of the application
      *
@@ -559,8 +510,8 @@
      * @param _EMPTY, _BLACK, _WHITE, _PARSED
      * @return object 
      */
-    
-    
+
+
     ipermindFactories.factory('Checker', ["_EMPTY", "_BLACK", "_WHITE", "_PARSED", function(_EMPTY, _BLACK, _WHITE, _PARSED) {
 
             function Checker() {
@@ -570,12 +521,12 @@
                 var computer_sequence;
 
             }
-            ;       
-            
+            ;
+
             Checker.prototype.init = function() {
                 this.result_matrix = new Array(_EMPTY, _EMPTY, _EMPTY, _EMPTY);
                 return this;
-            };           
+            };
 
             Checker.prototype.setPlayerSequence = function(user_sequence) {
                 this.user_sequence = user_sequence;
@@ -660,141 +611,144 @@
             return Checker;
 
         }]);
-    
 
 
-ipermindFactories.factory('Stars', function() {
-        
-        
-          /**
-             * getStars() , updateStars() , resetStars()
-             * show attempts - 5 attempts allowed
-             *
-             * @param  
-             * @return void 
-             */
-        
-        
-         function Stars() {
-                var stars;
+
+    ipermindFactories.factory('Stars', function() {
+
+
+        /**
+         * getStars() , updateStars() , resetStars()
+         * show attempts - 5 attempts allowed
+         *
+         * @param  
+         * @return void 
+         */
+
+
+        function Stars() {
+            var stars;
+        }
+        ;
+
+        Stars.prototype.init = function() {
+            this.stars = new Array();
+            return this;
+        };
+
+        Stars.prototype.getStars = function() {
+            if (this.stars[0] == "1") {
+                this.resetStars();
+            }
+            var star = "2";
+            for (var i = 0; i < 5; i++) {
+                this.stars.push(star);
+            }
+            return this.stars;
+        },
+                Stars.prototype.updateStars = function() {
+                    var star = "1";
+                    for (var i = 5; i > -1; i--) {
+                        if (this.stars[i] == "2") {
+                            this.stars[i] = "1";
+                            break;
+                        }
+                    }
+                };
+
+        Stars.prototype.resetStars = function() {
+            while (this.stars.length > 0) {
+                this.stars.pop();
+            }
+        };
+
+        return new Stars;
+
+    });
+
+
+    ipermindFactories.factory('Sequence', function() {
+
+
+        function Sequence() {
+        }
+        ;
+
+
+
+        /**
+         * increaseSequence(step) 
+         * set the element in the cell sequence
+         *
+         * @param string 
+         * @return void 
+         */
+
+        Sequence.prototype.increaseSequence = function(sequence, step) {
+
+            sequence.push(step);
+            return sequence;
+
+
+        };
+
+
+
+        /**
+         * setSequenceStep(elem) 
+         * set the element in the cell sequence
+         *
+         * @param string 
+         * @return void 
+         */
+
+        Sequence.prototype.setSequenceStr = function(sequence) {
+
+            return sequence[0] + "|" + sequence[1] + "|" + sequence[2] + "|" + sequence[3];
+
+
+        };
+
+
+
+        /**
+         * resetSequence(elem) 
+         * reset to empty cells
+         *
+         * @param string 
+         * @return void 
+         */
+
+        Sequence.prototype.resetSequence = function(sequence_step_view, elem) {
+
+            for (var y = 0; y < 4; y++) {
+                sequence_step_view[y] = elem;
+            }
+
+            return sequence_step_view;
+
+        };
+
+
+
+
+        return new Sequence;
+
+
+    });
+
+
+
+    ipermindFactories.factory('Arrow', ["_ARROW", "_ARROW_EMPTY", function(_ARROW, _ARROW_EMPTY) {
+
+
+            function Arrow() {
             }
             ;
-        
-            Stars.prototype.init = function() {
-                 this.stars = new Array();
-                 return this;
-            };
 
-            Stars.prototype.getStars = function() {
-                if (this.stars[0] == "1") {
-                    this.resetStars();
-                }
-                var star = "2";
-                for (var i = 0; i < 5; i++) {
-                    this.stars.push(star);
-                }
-                return this.stars;
-            },
 
-            Stars.prototype.updateStars = function() {
-                var star = "1";
-                for (var i = 5; i > -1; i--) {
-                    if (this.stars[i] == "2") {
-                        this.stars[i] = "1";
-                        break;
-                    }
-                }
-            };
 
-            Stars.prototype.resetStars = function() {
-                while (this.stars.length > 0) {
-                    this.stars.pop();
-                }
-            };
-            
-       return new Stars;
-
- });
- 
- 
- ipermindFactories.factory('Sequence', function() {
-     
-     
-     function Sequence() {};
-             
-             
-            
             /**
-             * increaseSequence(step) 
-             * set the element in the cell sequence
-             *
-             * @param string 
-             * @return void 
-             */
-
-            Sequence.prototype.increaseSequence = function(sequence,step) {
-               
-                    sequence.push(step);
-                    return sequence;
-                    
-
-            };
-            
-            
-            
-             /**
-             * setSequenceStep(elem) 
-             * set the element in the cell sequence
-             *
-             * @param string 
-             * @return void 
-             */
-
-            Sequence.prototype.setSequenceStr = function(sequence) {
-                
-               return sequence[0] + "|" + sequence[1] + "|" + sequence[2] + "|" + sequence[3];
-               
-
-            };
-            
-            
-            
-            /**
-             * resetSequence(elem) 
-             * reset to empty cells
-             *
-             * @param string 
-             * @return void 
-             */
-
-            Sequence.prototype.resetSequence = function(sequence_step_view,elem) {                
-             
-                for(var y=0; y<4; y++){                     
-                         sequence_step_view[y]=elem;                   
-                }
-                
-                return sequence_step_view;
-
-            };
-
-     
-     
-     
-     return new Sequence;
-     
-
- });
- 
- 
- 
-  ipermindFactories.factory('Arrow', ["_ARROW","_ARROW_EMPTY", function(_ARROW,_ARROW_EMPTY) {
-      
-      
-      function Arrow() {};
-      
-      
- 
-  /**
              * moveArrow(i) 
              * move the arrow indicator forward
              *
@@ -802,28 +756,28 @@ ipermindFactories.factory('Stars', function() {
              * @return void 
              */
 
-            Arrow.prototype.moveArrow = function(arrow_step,i) {                
-                
-                for(var y=0; y<4; y++){
-                     if(y==i){
-                         arrow_step[y]=_ARROW;
-                     } else {
-                         arrow_step[y]=_ARROW_EMPTY;
-                     }
+            Arrow.prototype.moveArrow = function(arrow_step, i) {
+
+                for (var y = 0; y < 4; y++) {
+                    if (y == i) {
+                        arrow_step[y] = _ARROW;
+                    } else {
+                        arrow_step[y] = _ARROW_EMPTY;
+                    }
                 }
-                
+
                 return arrow_step;
 
             };
 
-      return new Arrow;
-     
+            return new Arrow;
 
- }]);
- 
- 
-  
- 
+
+        }]);
+
+
+
+
 
 
 })();
