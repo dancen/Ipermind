@@ -11,7 +11,7 @@ describe('IpermindController', function() {
 
     var stateFactory, countdownFactory, $controller, StartGameState, PlayingGameState, EndGameState, starsFactory, Arrow, sequenceFactory, _seq_empty, _arrow, _arrow_empty, RecordService;
 
-    beforeEach(module('danieleControllers', function($provide) {
+    beforeEach(module('ipermindControllers', function($provide) {
         $provide.value('StateFactory', stateFactory);
         $provide.value('COUNTDOWN', countdownFactory);
         $provide.value('Stars', starsFactory);
@@ -91,7 +91,7 @@ describe('CalculatorController', function() {
 
 var $controller;
 
-beforeEach(module('danieleControllers'));
+beforeEach(module('calculatorControllers'));
 
 beforeEach(inject(function(_$controller_) {
         $controller = _$controller_;
