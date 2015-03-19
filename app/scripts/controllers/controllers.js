@@ -16,9 +16,27 @@
      *
      * @return object 
      */
-    var danieleControllers = angular.module('danieleControllers', []);
+    var ipermindControllers = angular.module('ipermindControllers', [])
+            .constant('_KING', "king")
+            .constant('_QUEEN', "queen")
+            .constant('_ROOK', "rook")
+            .constant('_BISHOP', "bishop")
+            .constant('_KNIGHT', "knight")
+            .constant('_PAWN', "pawn")
+            .constant('_EMPTY', "e")
+            .constant('_BLACK', "b")
+            .constant('_WHITE', "w")
+            .constant('_PARSED', "p")
+            .constant('LEVEL_EASY', 1)
+            .constant('LEVEL_MEDIUM', 2)
+            .constant('LEVEL_DIFFICULT', 3)
+            .constant('COUNTDOWN', 120)
+            .constant('_ARROW', "arrow")
+            .constant('_ARROW_EMPTY', "arrow_empty")
+            .constant('_SEQ_EMPTY', "empty")
+            .constant('RESPONSE_SUCCESS', "success");
 
-    danieleControllers.controller("IpermindController", ["$scope", "StateFactory", "$timeout", "COUNTDOWN", "Stars", "Arrow", "Sequence", "_SEQ_EMPTY", "_ARROW", "_ARROW_EMPTY", "RecordService", function($scope, StateFactory, $timeout, COUNTDOWN, Stars, Arrow, Sequence, _SEQ_EMPTY, _ARROW, _ARROW_EMPTY, RecordService) {
+    ipermindControllers.controller("IpermindController", ["$scope", "StateFactory", "$timeout", "COUNTDOWN", "Stars", "Arrow", "Sequence", "_SEQ_EMPTY", "_ARROW", "_ARROW_EMPTY", "RecordService", function($scope, StateFactory, $timeout, COUNTDOWN, Stars, Arrow, Sequence, _SEQ_EMPTY, _ARROW, _ARROW_EMPTY, RecordService) {
 
 
             /**
@@ -416,9 +434,9 @@
 
 
 
+    var calculatorControllers = angular.module('calculatorControllers', []);
 
-
-    danieleControllers.controller("CalculatorController", ["$scope", function($scope) {
+    calculatorControllers.controller("CalculatorController", ["$scope", function($scope) {
 
 
             /**
